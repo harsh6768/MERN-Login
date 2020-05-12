@@ -1,0 +1,68 @@
+.bg-img {
+	background-image: url('../../assets/img1.png');
+}
+.bg {
+	background-color: #00cc99;
+}
+
+.title {
+  color: #009999;
+  text-shadow: 2px 2px;
+}
+.icons-props {
+	width: 80px;
+	margin: auto;
+	/* display: inline-block; */
+}
+.signin-btn {
+	width: 130px;
+	background-color: #009999;
+	color: #ffffff;
+	border-radius: 17px;
+}
+.signin-btn:hover {
+	color: #ffffff;
+	list-style: none;
+}
+
+.facebook-icon {
+	font-size: 24px;
+	color: Dodgerblue;
+}
+.google-icon {
+	font-size: 24px;
+	color: #ea4335;
+}
+.linkedin-icon {
+	font-size: 24px;
+	color: Dodgerblue;
+}
+
+.gradient-color {
+	background: linear-gradient(to bottom, #009999 0%, #00cc99 100%);
+}
+
+.side-title {
+	font-size: 25px;
+}
+
+.side-page-btn {
+	border-radius: 17px;
+	border-color: #ffffff;
+	width: 110px;
+	margin: auto;
+	/* display: block; */
+}
+
+.side-page-btn:hover {
+	background: linear-gradient(to bottom, #009999 0%, #00cc99 100%) !important;
+	color: #ffffff;
+	border-color: #ffffff;
+	font-weight: bolder;
+	/* display: block; */
+}
+
+.side-page {
+	max-width: 700px;
+	/* width: 100%; */
+}

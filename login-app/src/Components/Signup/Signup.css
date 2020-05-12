@@ -1,0 +1,30 @@
+.signup-card-title {
+	color: #009999;
+}
+
+.signup-btn {
+	background-color: #009999;
+	width: 110px;
+	border-radius: 17px;
+}
+.input-styles {
+	border: 2px solid red;
+	border-radius: 4px;
+}
+
+.signup-title{
+    text-shadow: 2px 2px;
+}
+/* 
+input[type=text]{
+	border: none;
+	border-bottom: 2px solid red;
+} */
+
+.signup_position{
+	margin-top: 36px;
+}
+
+.signup-page{
+  margin-top: 73px;
+}

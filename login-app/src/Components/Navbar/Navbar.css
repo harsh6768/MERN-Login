@@ -1,0 +1,15 @@
+.bg-red{
+    background-color:red;
+}
+
+.bg-voilet{
+    background-color: #5562f2;
+}
+
+.nav-position{
+    margin-bottom: 100px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
