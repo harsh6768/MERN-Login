@@ -1,5 +1,7 @@
-const db = require('../database/mysqlDb');
-const bcrypt = require('bcrypt');
+const db 				= 		require('../database/mysqlDb');
+const bcrypt 			= 		require('bcrypt');
+const jwt               =       require('jsonwebtoken');
+const keys 				=		require('../config/keys');
 
 let register = async (req, res) => {
 	console.log(req.body);
@@ -60,16 +62,23 @@ let login = async(req, res) => {
         .then(async(user)=>{
             
              if(email==user[0].email){
-                      
-                bcrypt.compare(password,user[0].password,(err,resolve)=>{
+					  
+				//compare encrypted password
+				bcrypt.compare(password,user[0].password)
+				.then(isPasswordMatched=>{
+					if(isPasswordMatched){
 
-                    if(err) throw err;
+						//create jwt token
+						const auth_token=jwt.sign({id:user[0].id},keys.jwt.SECRET_TOKEN);
+						res.status(200).json({
+							body:{
+								token: auth_token
+							},
+							message: "User Login Successfully!"
+						});
 
-                    res.status(200).json({
-                        message: "User Login Successfully!"
-                    })
-
-                })
+					}
+				})
 
              }else{
                  console.log('Email is not correct')

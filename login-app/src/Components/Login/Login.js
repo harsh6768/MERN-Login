@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { SocialIcon } from 'react-social-icons';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
