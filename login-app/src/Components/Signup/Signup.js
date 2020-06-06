@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FaLock } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+toast.configure();
 
 class Signup extends Component {
 	constructor(props) {
@@ -11,6 +17,9 @@ class Signup extends Component {
 			username: '',
 			email: '',
 			password: '',
+			usernameError: '',
+			emailError: '',
+			passwordError: '',
 		};
 	}
 
@@ -23,25 +32,73 @@ class Signup extends Component {
 		});
 	};
 
-	onRegister = (event) => {
+	onRegister = async(event) => {
 		event.preventDefault();
 		const { username, email, password } = this.state;
 
 		console.log(username, email, password);
-
-		axios
-			.post('http://localhost:3001/register', { username, email, password })
-			.then((result) => {
+		if (username.length === 0) {
+			this.setState({
+				usernameError: 'Username can not be empty',
+			});
+			return;
+		} else if (username.length < 3) {
+			this.setState({
+				usernameError: 'Username should be 3 or more than 3 character',
+			});
+			return;
+		} else if (email.length === 0) {
+			this.setState({
+				usernameError: '',
+				emailError: 'Email should not be empty',
+			});
+			return;
+		} else if (!emailPattern.test(email)) {
+			this.setState({
+				usernameError: '',
+				emailError: 'Invalid email',
+			});
+			return;
+		} else if (password.length === 0) {
+			this.setState({
+				usernameError: '',
+				emailError: '',
+				passwordError: 'Password can not be empty',
+			});
+			return;
+		} else if (password.length < 6) {
+			this.setState({
+				usernameError: '',
+				emailError: '',
+				passwordError: 'Password length should be 6 or more than 6',
+			});
+			return;
+		} else {
+			this.setState({
+				usernameError: '',
+				emailError: '',
+				passwordError: '',
+			});
+			try {
+				const response =await axios.post('http://localhost:3001/register', { username, email, password });
 				console.log('response=>>>>\n');
 
-				console.log(result);
+				console.log(response.data);
 
 				//to navigate to login page
 				window.location.href = '/login';
-			})
-			.catch((err) => {
-				throw err;
-			});
+			} catch (error) {
+				console.log(error.response.data);
+
+				//To show the error
+				toast.error(error.response.data, {
+					position: toast.POSITION.TOP_CENTER,
+					hideProgressBar: true,
+					autoClose: 2000,
+				});
+				// console.log('User does not exist');
+			}
+		}
 	};
 
 	render() {
@@ -84,18 +141,20 @@ class Signup extends Component {
 											value={username}
 											onChange={this.onHandleChange}
 										></input>
+										<span className="text-danger error-message">{this.state.usernameError}</span>
 									</div>
 									<div className="form-group">
 										{/* <label for="email">Email-Id</label> */}
 										<input
 											className="form-control"
-											type="email"
+											// type="email"
 											id="email"
 											name="email"
 											placeholder="Enter email"
 											value={email}
 											onChange={this.onHandleChange}
 										></input>
+										<span className="text-danger error-message">{this.state.emailError}</span>
 									</div>
 									<div className="form-group">
 										{/* <label for="Password">Password</label> */}
@@ -108,6 +167,7 @@ class Signup extends Component {
 											value={password}
 											onChange={this.onHandleChange}
 										></input>
+										<span className="text-danger error-message">{this.state.passwordError}</span>
 									</div>
 									<div className="d-flex justify-content-center ">
 										<button type="submit" className="btn signin-btn  d-block ">

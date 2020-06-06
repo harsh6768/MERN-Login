@@ -28,3 +28,6 @@ input[type=text]{
 .signup-page{
   margin-top: 73px;
 }
+.error-message{
+	font-size: 12px;
+}

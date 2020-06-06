@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 class Login extends Component {
 	constructor(props) {
@@ -9,6 +13,8 @@ class Login extends Component {
 		this.state = {
 			email: '',
 			password: '',
+			emailError: '',
+			passwordError: '',
 		};
 	}
 	//for handling the input
@@ -20,26 +26,49 @@ class Login extends Component {
 	};
 
 	//for login button
-	onLogin = (event) => {
+	onLogin = async (event) => {
 		event.preventDefault();
+		const { email, password } = this.state;
 
-		const user = {
-			email: this.state.email,
-			password: this.state.password,
-		};
-		console.log(user.email, user.password);
-
-		axios
-			.post('http://localhost:3001/login', user)
-			.then((result) => {
-				// console.log(result)
-				window.location.href = '/';
-			})
-			.catch((err) => {
-				throw err;
+		//validations
+		if (email.length === 0) {
+			this.setState({
+				emailError: 'email field should not be empty',
 			});
-	};
+		} else if (password.length === 0) {
+			this.setState({
+				emailError: '',
+				passwordError: 'password field should not be empty',
+			});
+		} else {
+			this.setState({
+				emailError: '',
+				passwordError: '',
+			});
+			const user = {
+				email: this.state.email,
+				password: this.state.password,
+			};
+			console.log(user.email, user.password);
 
+			try {
+				const response = await axios.post('http://localhost:3001/login', user);
+				console.log(response.data);
+				//To navigate to home page
+				window.location.href = '/';
+			} catch (error) {
+				console.log(error.response.data);
+
+				//To show the error
+				toast.error(error.response.data, {
+					position: toast.POSITION.TOP_CENTER,
+					hideProgressBar: true,
+					autoClose: 2000,
+				});
+				// console.log('User does not exist');
+			}
+		}
+	};
 	render() {
 		let { email, password } = this.state;
 		return (
@@ -67,6 +96,7 @@ class Login extends Component {
 											value={email}
 											onChange={this.onHandleChange}
 										></input>
+										<span className="text-danger error-message">{this.state.emailError}</span>
 									</div>
 									<div className="form-group">
 										{/* <label for="Password">Password</label> */}
@@ -79,6 +109,7 @@ class Login extends Component {
 											value={password}
 											onChange={this.onHandleChange}
 										></input>
+										<span className="text-danger error-message">{this.state.passwordError}</span>
 									</div>
 									<div className="text-center mb-2">Forgot your password ?</div>
 									<div className="d-flex justify-content-center ">
