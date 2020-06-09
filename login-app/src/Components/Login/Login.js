@@ -54,6 +54,10 @@ class Login extends Component {
 			try {
 				const response = await axios.post('http://localhost:3001/login', user);
 				console.log(response.data);
+
+				//set value in localstorage
+				localStorage.setItem('is_login',true);
+				
 				//To navigate to home page
 				window.location.href = '/';
 			} catch (error) {
